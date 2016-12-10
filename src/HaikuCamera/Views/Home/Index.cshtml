@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="ShowWhileLoading LoadingIndicator"></div>
+<div class="ShowWhileLoading text-center">
+    @*<div class="jumbotron Haiku">of all the virtues
+patience is the single most
+irritating one</div>*@
+</div>
+
+@*<h2>Haiku Camera <small>Take photo, listen to haiku</small></h2>*@
+<div class="HideWhileLoading">
+    <form id="TheForm" class="text-center">
+        <input type="file" accept="image/*" capture id="ImageControl" name="photo" />
+    </form>
+
+    <div class="Haiku">
+        <div class="text-center">
+            <audio controls src=''></audio>
+            <a href="" class="btn btn-default" download id="DownloadMp3Button">Download MP3</a>
+        </div>
+        <div class="text-center">
+            <img src="" id="PreviewImage"/>
+        </div>
+    </div>
+</div>
+<div class="Spoiler text-center">
+    <div class="jumbotron Haiku" id="ResultHaikuText"></div>
+    <div id="DisplayKeywords"></div>
+</div>
+<script>
+    (function() {
+        "use strict";
+        var fileUploadControl;
+        var form;
+        var spoilerDiv;
+        document.addEventListener("DOMContentLoaded", function() {
+            fileUploadControl = document.getElementById("ImageControl");
+            form = document.getElementById("TheForm");
+            fileUploadControl.addEventListener("change", submitData);
+
+            spoilerDiv = document.querySelector('.Spoiler');
+            spoilerDiv.addEventListener('click', function() {
+                spoilerDiv.classList.toggle('Visible');
+            });
+        });
+
+        function submitData() {
+            document.body.classList.remove('Error');
+            if (!fileUploadControl.value) {
+                return;
+            }
+            document.body.classList.add('Loading');
+            document.getElementById('DisplayKeywords').innerHTML = '';
+            spoilerDiv.classList.remove('Visible');
+            document.getElementById('ResultHaikuText').innerHTML = 'of all the virtues\npatience is the single most\nirritating one';
+
+            var formData = new FormData(form);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "@Url.Action("Upload")");
+            //xhr.open("POST", "@Url.Action("Stub")");
+            xhr.send(formData);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState > 3 && xhr.status === 200) {
+                    handleUploadResult(xhr);
+                    document.body.classList.remove('Loading');
+                } else if (xhr.status >= 400) {
+                    document.body.classList.remove('Loading');
+                    document.body.classList.add('Error');
+                }
+            };
+        }
+
+        function handleUploadResult(xhr) {
+            var data = JSON.parse(xhr.response);
+            var keywords = '';
+            if (data.Keywords) {
+                keywords = data.Keywords.join(' •  ');
+            }
+            document.getElementById('DisplayKeywords').innerHTML = keywords;
+            document.getElementById('ResultHaikuText').innerHTML = data.HaikuText || '';
+            var audio = document.querySelector('audio');
+            audio.src = data.Mp3Url || '';
+            if (data.Mp3Url){
+                audio.play();
+            }
+            document.getElementById('DownloadMp3Button').href = audio.src;
+            document.querySelector('img').src = data.ImageUrl || '';
+        }
+    })();
+</script>

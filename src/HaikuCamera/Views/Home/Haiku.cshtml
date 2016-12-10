@@ -1,0 +1,8 @@
+﻿@using HaikuCamera.Models
+@model string
+
+@{
+    ViewBag.Title = "Haiku";
+}
+
+<div class="jumbotron Haiku" style="white-space: pre">@Haiku.FormatForDisplay(Model)</div>

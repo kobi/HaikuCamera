@@ -1,0 +1,88 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}
+    
+
+body { transition: background-color 0.4s;}
+*/
+body.Loading {background-color: #eee;}
+
+body .ShowWhileLoading { display: none; }
+body.Loading .ShowWhileLoading { display:block;}
+body.Loading .HideWhileLoading { display: none;}
+
+body .navbar-inverse {background-color:#6e5794;border-color:#3d3748;}
+body .navbar-inverse .navbar-brand {color:#d7bfff;font-size:28px;font-weight:normal;line-height:70px;height:70px;vertical-align:middle;padding:0 15px;}
+body .navbar-inverse a.navbar-link {color:#d7bfff;}
+body{padding-top:90px;}
+body.Error .navbar-inverse {background-color:#822;border-color:#422;}
+body.Error .navbar-inverse a.navbar-link,body.Error .navbar-inverse .navbar-brand  {color:#fdd;}
+body.Loading .navbar-inverse {background-color:#d8c;border-color:#423;}
+body.Loading .navbar-inverse a.navbar-link,body.Loading .navbar-inverse .navbar-brand  {color:#fde;}
+
+form {width:50%; margin:8px auto;}
+form input[type='file'] {border:solid silver 1px;padding:12px;width:100%;background-color:#f3f3f3;font-size: larger;cursor: pointer;}
+
+body audio {outline:solid silver 1px;margin:8px auto 0;width:calc(50% - 2px);display: block;}
+a#DownloadMp3Button { margin-bottom: 8px;border-radius: 0 0 4px 4px;width:50%;}
+img#PreviewImage {border:solid silver 1px;max-width: 80%;}
+
+audio,input,div,a,body {transition-duration: 0.4s ; transition-property: opacity, color, background-color, border-color, margin, padding;}
+
+audio[src=''], img#PreviewImage[src=''], a#DownloadMp3Button[href=''] { opacity: 0;pointer-events: none;}
+
+.jumbotron.Haiku { margin-top: 20px;white-space: pre;}
+
+/*loading animation*/
+
+.Loading .jumbotron { background-color: transparent;margin-top: 2em;color: #947;}
+
+body.Loading {
+    background-size: 160px 160px;
+    animation: BackgroundSlideUp 3s linear infinite;
+    background-image: linear-gradient(to bottom, #fefefe 0%,#fefefe 50%, #f8f8f8 50%,#f8f8f8 100% );
+    cursor: progress;
+}
+
+body.Loading .LoadingIndicator {
+    position: fixed; left: 0; top: 0;right: 0;bottom: 0;z-index: -100;pointer-events: none;
+    background-size: 320px 320px;
+    background-image: linear-gradient(to bottom, transparent 0%, transparent 30%, rgba(220,220,220,0.15) 30%, rgba(220,220,220,0.15) 70%, transparent 71%,transparent 100% );
+    animation: BackgroundSlideUp 2s linear infinite;
+}
+@keyframes BackgroundSlideUp {
+    0%{background-position:50% 0}
+    100%{background-position:50% -320px}
+}
+
+/* spoiler */
+
+.Spoiler { border-radius: 10px;padding: 12px;}
+.Spoiler > * { opacity: 0; }
+.Spoiler.Visible > *:not(:empty) { opacity: 1;}
+
+/* header */
+.navbar-header { float: left;}
+
+
+@media (max-width: 992px) {
+    form,a#DownloadMp3Button { width: 90%;}
+    body audio {width:calc(90% - 2px);}
+}
+@media (max-width: 400px) {
+    body{padding-top:160px;}
+}
