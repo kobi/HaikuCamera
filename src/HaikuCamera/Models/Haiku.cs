@@ -22,19 +22,19 @@ namespace HaikuCamera.Models
         {
             //todo: handle image over 5 MB
             var baseFileName = $"{DateTime.UtcNow:yyyyMMdd-HHmmss}_{Guid.NewGuid():D}";
-            var imageFileName = baseFileName+ ".jpg";
-            var mp3FileName = baseFileName+ ".mp3";
+            var imageFileName = baseFileName + ".jpg";
+            var mp3FileName = baseFileName + ".mp3";
             image.Save(Path.Combine(dataFolder, imageFileName), ImageFormat.Jpeg);
             var keywords = await DescribeImage(image);
             var foundHaiku = keywords.Any();
             if (!foundHaiku)
             {
-                keywords = new List<string> { "fail", "sad", "error" };
+                keywords = new List<string> {"fail", "sad", "error"};
             }
             var haikuText = FindHaiku(keywords);
             var formatForPolly = FormatForPolly(haikuText);
             await CreateMp3(formatForPolly, Path.Combine(dataFolder, mp3FileName));
-            var data= new HaikuData
+            var data = new HaikuData
             {
                 HaikuText = haikuText,
                 HaikuFormattedForPolly = formatForPolly,
@@ -61,7 +61,7 @@ namespace HaikuCamera.Models
                     Image = new RekognitionImage
                     {
                         Bytes = stream,
-                    }
+                    },
                 });
                 return content.Labels.Select(l => l.Name).ToList();
             }
@@ -69,7 +69,7 @@ namespace HaikuCamera.Models
 
         public async Task CreateMp3(string text, string targetMp3FilePath)
         {
-            text = text.Replace("\n", ",\n") + "."; //add commas at end of lines, for a dramatic stop.
+            //text = text.Replace("\n", ",\n") + "."; //add commas at end of lines, for a dramatic stop.
             var polly = new AmazonPollyClient();
             var speak = await polly.SynthesizeSpeechAsync(new SynthesizeSpeechRequest
             {
